@@ -39,9 +39,10 @@ picocom /dev/ttyUSB0 -b115200
 When the connectio is established the user will recognize the standard Python prompt which will allow to interactively run python code
 
 ```python
-print("Buongiorno")
+>>> print('hello esp8266!')
+hello esp8266!
 ```
-
+Even if REPL is extremely stripped down, it will store a limited command history (accessible with the up arrow) and, more importantly, it supports TAB completion for python commands and objects.
 
 
 
