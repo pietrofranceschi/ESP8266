@@ -16,6 +16,34 @@ lsusb
 ```
 /dev/ttyUSB0
 ```
-* 
+* After the installation of `esptool`, the firmware can be downoladed from the [micropython](https://micropython.org/download/esp8266/) website and flashed on the nodeMCU 
+  * ereasing the microcontroller flash
+  ```
+  esptool.py --port /dev/ttyUSB0 erase_flash
+  ```
+  * writing the actual firmware (here MYFIRMWARE.bin) with the correct baud rate (better explicitly identifying the port)
+  ```
+  esptool.py --port /dev/ttyUSB0 --baud 460800 write_flash --flash_size=detect 0 MYFIRMWARE.bin 
+
+  ```
+
+## Accessing the Micropython console via USB
+If the previous process has been succesful, it is now possible to interact with the ESP through the USB (actually serial) interface. In practice it will be possible to open a serial connection towards the ESP8266 and interactively run micropython commands on it through a REPL (Read Evaluate Print Loop).
+
+In order to do that it is necessary to have a terminal emulator installed on the machine (if missing install it trough the software manager). A possible choice is `picocom`
+
+```
+picocom /dev/ttyUSB0 -b115200
+```
+
+When the connectio is established the user will recognize the standard Python prompt which will allow to interactively run python code
+
+```python
+print("Buongiorno")
+```
+
+
+
+
 
 
