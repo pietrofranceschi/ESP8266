@@ -71,6 +71,23 @@ For ESP8266-based boards before using a tool like ampy you might need to disable
 
 As an alternative the code can be included in the `boot.py` python script which will automatically executed when the board is powered-up
 
+There are two important files that MicroPython looks for in the root of its filesystem.  These files contain MicroPython code that will be executed whenever the board is powered up or reset (i.e. it 'boots').  These files are:
+
+* /boot.py - This file is run first on power up/reset and should contain low-level code that sets up the board to finish booting.  You typically don't need to modify boot.py unless you're customizing or modifying MicroPython itself.  However it's interesting to look at the contents of the file to see what happens when the board boots up.  Remember you can use the ampy get command to read this and any other file!
+* /main.py - If this file exists it's run after boot.py and should contain any main script that you want to run when the board is powered up or reset.
+
+The main.py script is what you can use to have your own code run whenever a MicroPython board powers up.  Just like how an Arduino sketch runs whenever the Arduino board has power, writing a main.py to a MicroPython board will run that code whenever the MicroPython board has power.
+
+The typicla way of deploying a `main.py` file is to develop the code with a text editor on the PC and then transfer the file 
+to /main.py on a connected MicroPython board with ampy's put command:
+
+```
+ampy --port /serial/port put test.py /main.py
+```
+
+
+
+
 
 
 
