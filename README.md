@@ -69,7 +69,7 @@ For ESP8266-based boards before using a tool like ampy you might need to disable
 >>> esp.osdebug(None)
 ```
 
-As an alternative the code can be included in the `boot.py` python script which will automatically executed when the board is powered-up
+As an alternative the code can be included in the `boot.py` python script which will automatically executed when the board is powered-up.
 
 There are two important files that MicroPython looks for in the root of its filesystem.  These files contain MicroPython code that will be executed whenever the board is powered up or reset (i.e. it 'boots').  These files are:
 
