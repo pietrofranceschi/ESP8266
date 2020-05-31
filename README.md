@@ -70,6 +70,9 @@ For ESP8266-based boards before using a tool like ampy you might need to disable
 >>> esp.osdebug(None)
 ```
 
+I've found some issues when I use ampy and, in parallel, I'm interacting with the microcontroller throuch the REPL. To have ampy running smoothly (9for example to put files on the ESP) is better to disconnect from the REPL. In a sense the serial connection is already in use and this creates problems.
+
+
 As an alternative the code can be included in the `boot.py` python script which will automatically executed when the board is powered-up.
 
 There are two important files that MicroPython looks for in the root of its filesystem.  These files contain MicroPython code that will be executed whenever the board is powered up or reset (i.e. it 'boots').  These files are:
@@ -123,6 +126,31 @@ def do_connect():
     print('network config:', sta_if.ifconfig())
 
 ```
+
+## MQTT
+Put here a link with the basics of MQTT
+
+In the case of ESP8266 
+
+* load MQTTsimple on the ESP as python file (installation gives errors)
+
+```python
+>>> from MQTTsimple2 import MQTTClient
+>>> mqtt_server = '192.168.2.51'
+>>> import ubinascii
+>>> client_id = ubinascii.hexlify(machine.unique_id())
+>>> client = MQTTClient(client_id, mqtt_server)
+>>> client.connect()
+>>> client.publish(b'test', 'I'm alive')
+
+```
+... And on my Node-Red I see the message if I subscribe to the test topic ... note the *b* before the "topic" string 
+
+
+
+
+
+
 
 
 
