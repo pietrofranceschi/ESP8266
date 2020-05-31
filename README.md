@@ -79,17 +79,49 @@ There are two important files that MicroPython looks for in the root of its file
 The main.py script is what you can use to have your own code run whenever a MicroPython board powers up.  Just like how an Arduino sketch runs whenever the Arduino board has power, writing a main.py to a MicroPython board will run that code whenever the MicroPython board has power.
 
 The typicla way of deploying a `main.py` file is to develop the code with a text editor on the PC and then transfer the file 
-to /main.py on a connected MicroPython board with ampy's put command:
+to main.py on a connected MicroPython board with ampy's put command:
 
 ```
 ampy --port /serial/port put test.py /main.py
 ```
 
+## Networking
+The WSP8266 is provided of wi-fi capabilities. the microcontroller can serve either as access point (i.e. generating its own wireless network) or can connect to a router (station mode). The two modes of operation are managed by two interfaces which ca be configured by usng the `network` module
 
 
+```python
+>>> import network
+>>> sta_if = network.WLAN(network.STA_IF)
+>>> ap_if = network.WLAN(network.AP_IF)
+```
+
+By default the ESP8266 is configured in access point mode, so the AP_IF interface is active and the STA_IF interface is inactive. To activate the station mode and disable the AP model
+
+```python
+>>> sta_if.active(True)
+>>> ap_if.active(False)
+>>> sta_if.connect('<your ESSID>', '<your password>')
+>>> sta_if.isconnected()
+>>> sta_if.ifconfig()
+```
+It is useful to wrap the connection steps inside a function which could be put (and called!) inside the `boot.py` file
 
 
+```python
+def do_connect():
+    import network
+    sta_if = network.WLAN(network.STA_IF)
+    ap_if = network.WLAN(network.AP_IF)
+    ap_if.active(False)
+    if not sta_if.isconnected():
+        print('connecting to network...')
+        sta_if.active(True)
+        sta_if.connect('<essid>', '<password>')
+        while not sta_if.isconnected():
+            pass
+    print('network config:', sta_if.ifconfig())
 
+```
 
 
 
