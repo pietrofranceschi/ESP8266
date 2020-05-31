@@ -44,6 +44,9 @@ hello esp8266!
 ```
 Even if REPL is extremely stripped down, it will store a limited command history (accessible with the up arrow) and, more importantly, it supports TAB completion for python commands and objects.
 
+To disconnect from the REPL type CTRL-a+CTRL-x
+
+
 ## Modes of operation
 As for standard Python, on the ESP board the commands che be executed either interactively through the console, or "programmatically" running `.py` scripts which are present on the microcontroller flash memory.
 
