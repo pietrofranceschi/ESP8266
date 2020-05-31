@@ -50,8 +50,9 @@ As for standard Python, on the ESP board the commands che be executed either int
 To run micropythin script it is necessary to be able to "transfer" the code to the ESP memory. A possible way to perform this operation is to use the command line utility [**ampy**](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy). the utilyty also allow some basic operations like listing the files present in the flash memory. For example, the command: 
 
 ```
-For ESP8266-based boards before using a tool like ampy you might need to disable debug output on the board
+ampy --port /dev/ttyUSB0 run test
 ```
+
 will run the script `test.py` on the ESP board attached to the ttyUSB0 device.
 
 The other ampy commands are:
