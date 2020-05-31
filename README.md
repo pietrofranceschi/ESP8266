@@ -44,6 +44,35 @@ hello esp8266!
 ```
 Even if REPL is extremely stripped down, it will store a limited command history (accessible with the up arrow) and, more importantly, it supports TAB completion for python commands and objects.
 
+## Modes of operation
+As for standard Python, on the ESP board the commands che be executed either interactively through the console, or "programmatically" running `.py` scripts which are present on the microcontroller flash memory.
+
+To run micropythin script it is necessary to be able to "transfer" the code to the ESP memory. A possible way to perform this operation is to use the command line utility [**ampy**](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy). the utilyty also allow some basic operations like listing the files present in the flash memory. For example, the command: 
+
+```
+For ESP8266-based boards before using a tool like ampy you might need to disable debug output on the board
+```
+will run the script `test.py` on the ESP board attached to the ttyUSB0 device.
+
+The other ampy commands are:
+
+* get
+* ls
+* put
+* rm 
+* run
+
+For ESP8266-based boards before using a tool like ampy you might need to disable debug output on the board. This operation can be performed directly in the REPL
+
+```python
+>>> import esp
+>>> esp.osdebug(None)
+```
+
+As an alternative the code can be included in the `boot.py` python script which will automatically executed when the board is powered-up
+
+
+
 
 
 
