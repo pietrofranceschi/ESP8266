@@ -131,7 +131,12 @@ def do_connect():
 ```
 
 ## MQTT
-Put here a link with the basics of MQTT
+[MQTT](https://en.wikipedia.org/wiki/MQTT) is a lightweight *publisher-subscriber* communication protocol well suited for the exchange of information in low band high latency contexts. It is therefore a popular way to exchange information and commands in IoT networks.
+
+The geeral idea is that a central dispatching unit (the so called *broker*) acts a s a sort of communication hub (think about it as a virtual notice-board) where messages and commands coming from the different devices are published (displayed). The devices in the network subscribe to specific message topics which are posted on the broker's notice-board. MQTT is implemented over TCP/IP so the ESP8266 can act as a MQTT client posting and receiving messages from a MQTT broker.
+
+The messages can be sensor readings or commands triggering the digital IO of the board.
+
 
 In the case of ESP8266 
 
