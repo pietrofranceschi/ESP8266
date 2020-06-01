@@ -145,27 +145,37 @@ But, how can one make the library availabe on the ESP8266?
 * upload the library as .py file on the ESP flash by using `ampy`
 
 The first solution would be more linear, but I've encounter errors, asfar as I understand, due to the limited memory space of the microcontroller.
-In my case the second was succesfull
+In my case the second strategy was succesfull
 
-
-
-
-
-In the case of ESP8266 
-
-* load MQTTsimple on the ESP as python file (installation gives errors)
+* Download the python file from the [umqtt.simple2] (https://github.com/fizista/micropython-umqtt.simple2)) GIT repository saving it as `MQTTsimple2.py`
+* Disconnect form the REPL (see above)
+* Load the library on the ESP8266
+ ```
+ ampy --port /dev/ttyUSB0 put MQTTsimple2.py
+ ```
+* After connecting to the REPL
+ * configure the network interface to be "online"
+ * configure the MQTT client by defyning the IP of the MQTT broker (in my case 192.168.2.51) and the unique ID of the client
 
 ```python
 >>> from MQTTsimple2 import MQTTClient
 >>> mqtt_server = '192.168.2.51'
 >>> import ubinascii
 >>> client_id = ubinascii.hexlify(machine.unique_id())
+```
+ * connect to the broker (if the connect command is successfull it will return `0`)
+
+
+```python
 >>> client = MQTTClient(client_id, mqtt_server)
 >>> client.connect()
->>> client.publish(b'test', 'I'm alive')
-
 ```
-... And on my Node-Red I see the message if I subscribe to the test topic ... note the *b* before the "topic" string 
+ * publish something on the broker. Here the topic is `test` and the message is `I'm alive`
+
+```python
+>>> client.publish(b'test', 'I'm alive')
+```
+... note the *b* before the "topic" string 
 
 
 
