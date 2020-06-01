@@ -137,6 +137,19 @@ The geeral idea is that a central dispatching unit (the so called *broker*) acts
 
 The messages can be sensor readings or commands triggering the digital IO of the board.
 
+MQTT capability can be implemented on the WSP8266 by using several libraries. Apparently the community has been develop simple solutions (the more recent seems to be [umqtt.simple2] (https://github.com/fizista/micropython-umqtt.simple2)) or more robust versions (robust in the sense that they re-try to send data in case of conncetion losses) [mqtt.robust2](https://github.com/fizista/micropython-umqtt.robust2). Both solution have been developed relying on a the network TCP/IP protocol
+
+But, how can one make the library availabe on the ESP8266? 
+
+* install the library with `upip`. `upip`, read "micropip", is the micropython analogous of `pip`, the utility which allows to install software from python repos.
+* upload the library as .py file on the ESP flash by using `ampy`
+
+The first solution would be more linear, but I've encounter errors, asfar as I understand, due to the limited memory space of the microcontroller.
+In my case the second was succesfull
+
+
+
+
 
 In the case of ESP8266 
 
