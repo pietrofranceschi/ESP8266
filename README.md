@@ -160,6 +160,7 @@ In my case the second strategy was succesfull
 ```python
 >>> from MQTTsimple2 import MQTTClient
 >>> mqtt_server = '192.168.2.51'
+>>> import machine
 >>> import ubinascii
 >>> client_id = ubinascii.hexlify(machine.unique_id())
 ```
@@ -173,7 +174,7 @@ In my case the second strategy was succesfull
  * publish something on the broker. Here the topic is `test` and the message is `I'm alive`
 
 ```python
->>> client.publish(b'test', 'I'm alive')
+>>> client.publish(b'test', 'Alive')
 ```
 ... note the *b* before the "topic" string 
 
