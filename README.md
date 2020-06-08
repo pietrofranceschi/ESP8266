@@ -21,7 +21,7 @@ lsusb
   ```
   esptool.py --port /dev/ttyUSB0 erase_flash
   ```
-  * writing the actual firmware (here MYFIRMWARE.bin) with the correct baud rate (better explicitly identify the port)
+  * write the actual firmware (here MYFIRMWARE.bin) with the correct baud rate (better explicitly identify the port)
   ```
   esptool.py --port /dev/ttyUSB0 --baud 460800 write_flash --flash_size=detect 0 MYFIRMWARE.bin 
 
@@ -111,7 +111,7 @@ By default, the ESP8266 is configured in access point mode, so the AP_IF interfa
 >>> sta_if.isconnected()
 >>> sta_if.ifconfig()
 ```
-It is useful to wrap the connection steps inside a function which could be put (and called!) inside the `boot.py` file
+It can be useful to wrap the connection steps inside a function which could be put (and called!) inside the `boot.py` file
 
 
 ```python
@@ -171,12 +171,100 @@ These are the steps:
 >>> client = MQTTClient(client_id, mqtt_server)
 >>> client.connect()
 ```
- * publish something on the broker. Here the topic is `test` and the message is `Alive`
+ * publish something on the broker. Here the topic is `test` and the message is `Alive` (note the *b* before the "topic" string )
 
 ```python
 >>> client.publish(b'test', 'Alive')
 ```
-... note the *b* before the "topic" string 
+
+In my case I was checking the success of the overall process by using node-red (running on a RaspBerry Pi 3). The way to do that is to configure the MQTT broker  and subscribe to the test topic by using the default MQTT node.
+
+After running some tests I finally wrapped everything in a custom `boot.py` file which is now running on the ESPboard. The script issues messages which can be visualized on the REPL during boot
+
+```python
+#boot.py
+import gc
+import network
+import ubinascii
+import esp
+
+## load the MQTT module which is saved in the MQTTsimple2.py
+## file
+from MQTTsimple2 import MQTTClient
+
+## this will be used to create a unique ID for MQTT
+import machine
+
+print('[boot]')
+
+## Set up wireless network ###########################################
+SSID = '*****'           ## put the SSID
+password = '*****'       ## put the password
+ 
+## initialize the network interfaces 
+wlan = network.WLAN(network.STA_IF) # STA_IF means station interface
+ap = network.WLAN(network.AP_IF)    # AP_IF means access point
+print('Shutting down access point...')
+ap.active(False)                    # shut down access point
+ 
+## cycle while connecting 
+if not wlan.isconnected():
+    print('Connecting to ' + SSID)
+    wlan.active(True)
+    wlan.connect(SSID, password)
+    while not wlan.isconnected():
+        pass
+
+## grab the network configurations
+(ip, netmask, gateway, dns) = wlan.ifconfig()
+
+##
+password = ''            # overwrite the password for security reasons
+
+## Connect to the MQTT broker ###########################################
+
+print('connecting to the MQTT broker')
+mqtt_server = ''         ## put there the IP of the MQTT broker (the port is the default one)
+
+## Define the client ID which is required for the connection
+client_id = ubinascii.hexlify(machine.unique_id())   
+
+## create the MQTT object
+client = MQTTClient(client_id, mqtt_server)
+
+## connect to the client and check if the connection is OK
+MQTTisconnected = client.connect()
+if MQTTisconnected != 0:
+    print('MQTT server not reachable')
+
+## disable debug  #########################################################    
+print(' ')
+print('Disabling debug ...')
+esp.osdebug(None)
+print(' ')
+
+## clean up the memory
+gc.collect()
+print(' ')
+print('Memory free:', gc.mem_free())
+print(' ')
+
+
+```
+
+
+
+
+
+## Collecting analog sensor data
+
+
+
+
+
+
+
+
 
 
 
